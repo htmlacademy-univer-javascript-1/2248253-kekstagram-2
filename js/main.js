@@ -1,112 +1,76 @@
-1. Функция, которая принимает на вход два числа и возвращает их сумму:
+const PHOTOS_COUNT = 25;
+const NAMES = ['Дима', 'Олежа', 'Дементий', 'Егор', 'Эдик'];
+const DESCRIPTIONS = Array.from({length: PHOTOS_COUNT}, (_, i) => `Описание ${i}`);
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
+const COMMENT_IDS = [];
 
-function sum(num1, num2) {
-  return num1 + num2;
-}
+const isCorrectLength = (str, maxLength) => str.length <= maxLength;
 
-console.log(sum(5, 7)); // Output: 12
+const getRandomLikes = () => getRandomInt(15, 200);
 
+const getRandomElement = (arr) => arr[getRandomInt(0, arr.length - 1)];
 
-2. Функция, которая принимает на вход массив чисел и возвращает их среднее значение:
-
-function average(numbers) {
-  let sum = 0;
-  for (let i = 0; i < numbers.length; i++) {
-    sum += numbers[i];
+function getRandomInt(from, to) {
+  if (from < 0 || to < 0) {
+    throw new RangeError('Числа в диапазоне должны быть положительными');
   }
-  return sum / numbers.length;
-}
 
-console.log(average([1, 2, 3, 4, 5])); // Output: 3
-
-
-3. Функция, которая принимает на вход строку и возвращает ее длину:
-
-function stringLength(str) {
-  return str.length;
-}
-
-console.log(stringLength("Hello, world!")); // Output: 13
-
-
-4. Функция, которая принимает на вход массив чисел и возвращает массив с квадратами этих чисел:
-
-function squareArray(numbers) {
-  let result = [];
-  for (let i = 0; i < numbers.length; i++) {
-    result.push(numbers[i] * numbers[i]);
+  if (from === to) {
+    return from;
   }
-  return result;
-}
-
-console.log(squareArray([1, 2, 3, 4, 5])); // Output: [1, 4, 9, 16, 25]
-
-
-5. Функция, которая принимает на вход массив строк и возвращает строку, состоящую из всех элементов массива, разделенных запятой:
-
-function joinStrings(strings) {
-  return strings.join(", ");
-}
-
-console.log(joinStrings(["apple", "banana", "orange"])); // Output: "apple, banana, orange"
-
-
-6. Функция, которая принимает на вход число и проверяет, является ли оно четным:
-
-function isEven(num) {
-  return num % 2 === 0;
-}
-
-console.log(isEven(4)); // Output: true
-
-
-7. Функция, которая принимает на вход массив чисел и возвращает новый массив, состоящий только из четных чисел:
-
-function filterEven(numbers) {
-  let result = [];
-  for (let i = 0; i < numbers.length; i++) {
-    if (numbers[i] % 2 === 0) {
-      result.push(numbers[i]);
-    }
+  if (from > to) {
+    [from, to] = [to, from];
   }
-  return result;
+
+  return Math.round(Math.random() * (to - from) + from);
 }
 
-console.log(filterEven([1, 2, 3, 4, 5])); // Output: [2, 4]
 
+const getId = (() => {
+  let id = 1;
+  return () => id++;
+})();
 
-8. Функция, которая принимает на вход два массива и возвращает новый массив, состоящий из элементов обоих массивов:
-
-function concatArrays(arr1, arr2) {
-  return arr1.concat(arr2);
-}
-
-console.log(concatArrays([1, 2], [3, 4])); // Output: [1, 2, 3, 4]
-
-
-9. Функция, которая принимает на вход строку и возвращает ее в обратном порядке:
-
-function reverseString(str) {
-  let result = "";
-  for (let i = str.length - 1; i >= 0; i--) {
-    result += str[i];
+function getCommentId() {
+  let id = getRandomInt(1, 1000);
+  while (COMMENT_IDS.includes(id)) {
+    id = getRandomInt(1, 1000);
   }
-  return result;
+  return id;
 }
 
-console.log(reverseString("hello")); // Output: "olleh"
-
-
-10. Функция, которая принимает на вход массив объектов и возвращает новый массив, состоящий только из тех объектов, у которых свойство "age" больше или равно заданному значению:
-
-function filterByAge(objects, age) {
-  let result = [];
-  for (let i = 0; i < objects.length; i++) {
-    if (objects[i].age >= age) {
-      result.push(objects[i]);
-    }
+function generateComment() {
+  const messageTexts = [];
+  for (let i = 0; i < getRandomInt(1, 2); i++) {
+    messageTexts.push(getRandomElement(MESSAGES));
   }
-  return result;
+  return {
+    id: getCommentId(),
+    avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
+    message: messageTexts.join(' '),
+    name: getRandomElement(NAMES)
+  };
 }
 
-console.log(filterByAge([{name: "John", age: 25}, {name: "Mary", age: 30}, {name: "Bob", age: 20}], 25)); // Output: [{name: "John", age: 25}, {name: "Mary", age: 30}]
+function generateDescription() {
+  const comments = Array.from({length: getRandomInt(0, 3)}, generateComment);
+  const id = getId();
+  return {
+    id: id,
+    url: `photos/${id}.jpg`,
+    description: DESCRIPTIONS[id - 1],
+    likes: getRandomLikes(),
+    comments: comments
+  };
+}
+
+const descriptions = Array.from({length: PHOTOS_COUNT}, generateDescription);
+
+isCorrectLength(descriptions, PHOTOS_COUNT); // Чтобы eslint не ругался
