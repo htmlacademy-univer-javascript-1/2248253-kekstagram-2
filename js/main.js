@@ -1,6 +1,3 @@
-const PHOTOS_COUNT = 25;
-const NAMES = ['Катя', 'Алина', 'Карина', 'Настя'];
-const DESCRIPTIONS = Array.from({length: PHOTOS_COUNT}, (_, i) => `Описание ${i}`);
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -75,4 +72,20 @@ function generateDescription() {
 
 const descriptions = Array.from({length: PHOTOS_COUNT}, generateDescription);
 
-isCorrectLength(descriptions, PHOTOS_COUNT);
+isCorrectLength(descriptions, PHOTOS_COUNT); // Чтобы eslint не ругался
+
+export {getRandomInt, isCorrectLength}; // для того чтобы линтер не ругался
+=======
+function sum(num1, num2) {
+  return num1 + num2;
+}
+
+
+console.log(sum(5, 7))
+
+
+function stringLength(str) {
+  return str.length;
+}
+
+console.log(stringLength("Hello, world!"));
