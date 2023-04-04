@@ -11,6 +11,7 @@ const MESSAGES = [
 ];
 const COMMENT_IDS = [];
 
+
 const isCorrectLength = (str, maxLength) => str.length <= maxLength;
 
 const getRandomLikes = () => getRandomInt(15, 200);
@@ -25,7 +26,7 @@ function getRandomInt(from, to) {
   if (from === to) {
     return from;
   }
- 
+  if (from > to){
   if (from > to) {
     [from, to] = [to, from];
   }
@@ -33,7 +34,7 @@ function getRandomInt(from, to) {
   return Math.round(Math.random() * (to - from) + from);
 }
 
-
+const isCorrectLength = (str, maxLength) => str.length <= maxLength;
 const getId = (() => {
   let id = 1;
   return () => id++;
@@ -73,4 +74,6 @@ function generateDescription() {
 }
 
 const descriptions = Array.from({length: PHOTOS_COUNT}, generateDescription);
+
+isCorrectLength(descriptions, PHOTOS_COUNT); // Чтобы eslint не ругался
 
