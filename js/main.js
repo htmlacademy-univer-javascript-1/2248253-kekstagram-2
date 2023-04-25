@@ -1,3 +1,4 @@
+
 import {generateDescription, PHOTOS_COUNT} from './data';
 import {isCorrectLength} from './util';
 
