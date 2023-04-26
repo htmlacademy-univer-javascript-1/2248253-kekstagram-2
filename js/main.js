@@ -1,5 +1,16 @@
+import {getMiniatures} from './api.js';
+import {insertPhotoMiniature} from './photoMiniature.js';
+import {showFileForm} from './form.js';
+import {showFilters} from './filters.js';
 
-import {generateDescription, PHOTOS_COUNT} from './data';
-import {isCorrectLength} from './util';
+//const descriptions = Array.from({length: PHOTOS_COUNT}, generateDescription);
+//insertPhotoMiniature(descriptions);
 
-const descriptions = Array.from({length: PHOTOS_COUNT}, generateDescription);
+
+getMiniatures()
+  .then((r) => {
+    insertPhotoMiniature(r);
+    return r;
+  })
+  .then(showFilters);
+document.querySelector('#upload-file').addEventListener('change', showFileForm);
